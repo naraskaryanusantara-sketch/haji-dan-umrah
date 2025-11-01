@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BURAQ - Teman Perjalanan Suci Anda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Poppins', sans-serif;
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.8s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      /* Sidebar transition */
+      #sidebar {
+        transition: transform 0.3s ease-in-out;
+      }
+      @media (max-width: 767px) {
+        #sidebar.translate-x-0 {
+          transform: translateX(0);
+        }
+        #sidebar.-translate-x-full {
+          transform: translateX(-100%);
+        }
+      }
+      .page-content {
+        display: none;
+      }
+      .page-content.active {
+        display: block;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-slate-50">
+    <div class="min-h-screen flex flex-col md:flex-row relative">
+        <!-- Mobile Menu Button -->
+        <button 
+          id="menu-open-btn"
+          aria-label="Open menu"
+          class="md:hidden fixed top-4 left-4 z-50 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-lg text-gray-700 hover:bg-white transition"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+
+        <!-- Overlay for mobile sidebar -->
+        <div 
+          id="sidebar-overlay"
+          class="md:hidden fixed inset-0 bg-black/50 z-30 hidden" 
+          aria-hidden="true"
+        ></div>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen bg-white shadow-xl -translate-x-full md:translate-x-0">
+          <div class="h-full px-3 py-4 overflow-y-auto">
+            <div class="flex justify-between items-center p-4 mb-4 text-center">
+              <div>
+                <h1 class="text-3xl font-bold text-pink-700">BURAQ</h1>
+                <p class="text-sm text-gray-500">Teman Perjalanan Suci Anda</p>
+              </div>
+              <button id="menu-close-btn" class="md:hidden text-gray-500 hover:text-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            <ul id="nav-links" class="space-y-2 font-medium">
+              <li>
+                <a data-page="dashboard" class="flex items-center p-4 my-2 text-lg rounded-lg transition-all duration-300 ease-in-out cursor-pointer bg-pink-600 text-white shadow-lg">
+                  <span class="mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg></span>
+                  Dashboard
+                </a>
+              </li>
+              <li>
+                <a data-page="haji" class="flex items-center p-4 my-2 text-lg rounded-lg transition-all duration-300 ease-in-out cursor-pointer text-gray-600 hover:bg-pink-100 hover:text-pink-800">
+                  <span class="mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg></span>
+                  Paket Haji
+                </a>
+              </li>
+              <li>
+                <a data-page="umrah" class="flex items-center p-4 my-2 text-lg rounded-lg transition-all duration-300 ease-in-out cursor-pointer text-gray-600 hover:bg-pink-100 hover:text-pink-800">
+                  <span class="mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg></span>
+                  Paket Umrah
+                </a>
+              </li>
+              <li>
+                <a data-page="contact" class="flex items-center p-4 my-2 text-lg rounded-lg transition-all duration-300 ease-in-out cursor-pointer text-gray-600 hover:bg-pink-100 hover:text-pink-800">
+                  <span class="mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></span>
+                  Kontak Kami
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 sm:p-6 md:p-10 md:ml-64 mt-12 md:mt-0">
+            <!-- Dashboard Page -->
+            <div id="page-dashboard" class="page-content active animate-fadeIn">
+                <div class="space-y-20">
+                    <!-- Hero Section -->
+                    <section class="relative h-[450px] rounded-2xl bg-cover bg-center text-white flex flex-col items-center justify-center text-center p-8 overflow-hidden shadow-2xl" style="background-image: url('https://lh3.googleusercontent.com/d/1XK0AWgPbvs5bOPdzKubuNknvN1C9jGNA')">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-black/20"></div>
+                        <div class="relative z-10">
+                            <h1 class="text-4xl md:text-6xl font-bold mb-4" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.6)">Perjalanan Suci Menuju Baitullah</h1>
+                            <p class="text-lg md:text-xl mb-8" style="text-shadow: 1px 1px 4px rgba(0,0,0,0.5)">Wujudkan impian ibadah Haji dan Umrah Anda bersama kami.</p>
+                            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                                <button data-page="umrah" class="nav-button bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 shadow-lg transform hover:scale-105">Lihat Paket Umrah</button>
+                                <button data-page="haji" class="nav-button bg-white/90 backdrop-blur-sm hover:bg-white text-pink-700 font-bold py-3 px-8 rounded-full transition duration-300 shadow-lg transform hover:scale-105">Lihat Paket Haji</button>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Features Section -->
+                    <section>
+                        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Mengapa Memilih BURAQ?</h2>
+                        <div class="grid md:grid-cols-3 gap-8">
+                            <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 ease-in-out text-center">
+                                <div class="mx-auto bg-pink-100 text-pink-600 w-16 h-16 rounded-full flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21v-1a6 6 0 00-5.176-5.97M15 21h6m-6-1a6 6 0 00-5.176-5.97m-3.214-2.175a4 4 0 015.364-5.364M9 12a4 4 0 110-8 4 4 0 010 8z"></path></svg></div>
+                                <h3 class="text-xl font-semibold text-gray-800 mb-2">Pembimbing Profesional</h3>
+                                <p class="text-gray-500">Dibimbing oleh ustadz yang berpengalaman dan tersertifikasi, siap membantu setiap langkah ibadah Anda.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 ease-in-out text-center">
+                                <div class="mx-auto bg-pink-100 text-pink-600 w-16 h-16 rounded-full flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg></div>
+                                <h3 class="text-xl font-semibold text-gray-800 mb-2">Fasilitas Premium</h3>
+                                <p class="text-gray-500">Akomodasi hotel bintang 5 yang dekat dengan Masjidil Haram dan Masjid Nabawi, serta penerbangan terbaik.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 ease-in-out text-center">
+                                <div class="mx-auto bg-pink-100 text-pink-600 w-16 h-16 rounded-full flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg></div>
+                                <h3 class="text-xl font-semibold text-gray-800 mb-2">Layanan Lengkap</h3>
+                                <p class="text-gray-500">Mulai dari manasik, perlengkapan, visa, hingga air zam-zam, semua kami siapkan untuk Anda.</p>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Popular Umrah Packages -->
+                    <section>
+                        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Paket Umrah Populer</h2>
+                        <div id="dashboard-umrah-packages" class="grid md:grid-cols-2 lg:grid-cols-2 gap-8"></div>
+                        <div class="text-center mt-12">
+                            <button data-page="umrah" class="nav-button bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 shadow-lg transform hover:scale-105">Lihat Semua Paket Umrah</button>
+                        </div>
+                    </section>
+                    <!-- Featured Haji Packages -->
+                    <section>
+                        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Paket Haji Pilihan</h2>
+                         <div id="dashboard-haji-packages" class="grid md:grid-cols-2 lg:grid-cols-2 gap-8"></div>
+                        <div class="text-center mt-12">
+                            <button data-page="haji" class="nav-button bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 shadow-lg transform hover:scale-105">Lihat Semua Paket Haji</button>
+                        </div>
+                    </section>
+                    <!-- Testimonials Section -->
+                    <section>
+                        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Kata Mereka Para Jamaah</h2>
+                        <div class="grid md:grid-cols-2 gap-8">
+                             <div class="bg-white p-8 rounded-xl shadow-lg relative">
+                                <svg class="absolute top-4 left-4 w-10 h-10 text-pink-100" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true"><path d="M9.333 8h-4.666v16h12v-8h-7.333v-8zM27.333 8h-4.666v16h12v-8h-7.333v-8z"></path></svg>
+                                <p class="text-gray-600 italic relative z-10 mb-4">"Alhamdulillah, pelayanan BURAQ sangat memuaskan. Pembimbingnya sabar dan hotelnya sangat nyaman. Insya Allah akan kembali lagi bersama keluarga."</p>
+                                <div class="text-right">
+                                    <p class="font-semibold text-pink-700">Bapak H. Abdullah</p>
+                                    <p class="text-sm text-gray-500">Umrah Barokah 2023</p>
+                                </div>
+                            </div>
+                             <div class="bg-white p-8 rounded-xl shadow-lg relative">
+                                <svg class="absolute top-4 left-4 w-10 h-10 text-pink-100" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true"><path d="M9.333 8h-4.666v16h12v-8h-7.333v-8zM27.333 8h-4.666v16h12v-8h-7.333v-8z"></path></svg>
+                                <p class="text-gray-600 italic relative z-10 mb-4">"Pengalaman haji pertama yang tak terlupakan. Semua diatur dengan sangat baik, jadi bisa fokus beribadah. Terima kasih BURAQ."</p>
+                                <div class="text-right">
+                                    <p class="font-semibold text-pink-700">Ibu Siti Aisyah</p>
+                                    <p class="text-sm text-gray-500">Haji Furoda 2023</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Contact Preview Section -->
+                    <section class="text-center bg-white p-10 rounded-2xl shadow-xl">
+                        <h2 class="text-4xl font-bold text-gray-800 mb-4">Siap Mewujudkan Perjalanan Suci Anda?</h2>
+                        <p class="text-lg text-gray-500 mb-10 max-w-2xl mx-auto">Tim kami siap membantu Anda dengan informasi lengkap dan layanan terbaik. Jangan ragu untuk menghubungi kami.</p>
+                        <div class="grid md:grid-cols-3 gap-8 mb-10 max-w-4xl mx-auto">
+                            <!-- Contact Info Items -->
+                            <div class="flex items-start text-left">
+                                <div class="flex-shrink-0 w-12 h-12 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
+                                <div><h3 class="font-semibold text-gray-800">Alamat Kantor</h3><div class="text-gray-600"><p>Kp. Singatuwuh, Ds. Jatisari, Kec. Cisompet, Kab. Garut, Jawa Barat 44174</p></div></div>
+                            </div>
+                            <div class="flex items-start text-left">
+                                <div class="flex-shrink-0 w-12 h-12 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></div>
+                                <div><h3 class="font-semibold text-gray-800">Telepon</h3><div class="text-gray-600"><p>0856-3231-191</p></div></div>
+                            </div>
+                            <div class="flex items-start text-left">
+                                <div class="flex-shrink-0 w-12 h-12 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
+                                <div><h3 class="font-semibold text-gray-800">Email</h3><div class="text-gray-600"><p>naraskaryanusantara@gmail.com</p></div></div>
+                            </div>
+                        </div>
+                        <button data-page="contact" class="nav-button bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 shadow-lg transform hover:scale-105">Hubungi Kami Sekarang</button>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Haji Packages Page -->
+            <div id="page-haji" class="page-content animate-fadeIn">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Paket Ibadah Haji</h1>
+                <p class="text-lg text-gray-500 mb-8">Pilih paket haji terbaik untuk menyempurnakan rukun Islam Anda.</p>
+                <div id="haji-packages-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+
+            <!-- Umrah Packages Page -->
+            <div id="page-umrah" class="page-content animate-fadeIn">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Paket Ibadah Umrah</h1>
+                <p class="text-lg text-gray-500 mb-8">Rasakan ketenangan beribadah di tanah suci dengan paket umrah pilihan kami.</p>
+                <div id="umrah-packages-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+            
+            <!-- Contact Us Page -->
+            <div id="page-contact" class="page-content animate-fadeIn">
+              <h1 class="text-4xl font-bold text-gray-800 mb-2">Hubungi Kami</h1>
+              <p class="text-lg text-gray-500 mb-8">Kami siap membantu merencanakan perjalanan ibadah Anda. Silakan isi form di bawah atau hubungi kami langsung.</p>
+              <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="grid lg:grid-cols-2">
+                  <!-- Form Section -->
+                  <div class="p-8 lg:p-12">
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-6">Kirim Pertanyaan via WhatsApp</h2>
+                    <div class="space-y-6">
+                      <div>
+                        <label for="contact-name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                        <input type="text" id="contact-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 transition" placeholder="Nama Anda">
+                      </div>
+                      <div>
+                        <label for="contact-email" class="block text-sm font-medium text-gray-700 mb-1">Alamat Email (Opsional)</label>
+                        <input type="email" id="contact-email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 transition" placeholder="email@anda.com">
+                      </div>
+                      <div>
+                        <label for="contact-message" class="block text-sm font-medium text-gray-700 mb-1">Pesan Anda</label>
+                        <textarea id="contact-message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 transition" placeholder="Tuliskan pertanyaan Anda di sini..."></textarea>
+                      </div>
+                      <div>
+                        <button id="send-whatsapp-btn" type="button" class="w-full bg-pink-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-pink-700 transition-colors duration-300 shadow-lg flex items-center justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+                          Kirim via WhatsApp
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Info Section -->
+                  <div class="bg-slate-100 p-8 lg:p-12">
+                     <h2 class="text-2xl font-semibold text-gray-700 mb-6">Informasi Kontak</h2>
+                     <div class="space-y-8">
+                       <div class="flex items-start">
+                          <div class="flex-shrink-0 w-12 h-12 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
+                          <div><h3 class="font-semibold text-gray-800">Alamat Kantor</h3><p class="text-gray-600">Kp. Singatuwuh, Ds. Jatisari, Kec. Cisompet, Kab. Garut, Jawa Barat 44174</p></div>
+                       </div>
+                       <div class="flex items-start">
+                          <div class="flex-shrink-0 w-12 h-12 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></div>
+                          <div><h3 class="font-semibold text-gray-800">Telepon</h3><p class="text-gray-600">0856-3231-191</p></div>
+                       </div>
+                       <div class="flex items-start">
+                          <div class="flex-shrink-0 w-12 h-12 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
+                          <div><h3 class="font-semibold text-gray-800">Email</h3><p class="text-gray-600">naraskaryanusantara@gmail.com</p></div>
+                       </div>
+                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // --- DATA ---
+        const hajiPackagesData = [
+            { id: 1, name: 'Haji Furoda VIP', price: 'Rp 350 Jt', duration: '25 Hari', features: ['Visa Furoda Resmi', 'Hotel Bintang 5 Dekat Masjid', 'Maskapai Saudia Airlines', 'Manasik Eksklusif'], imageUrl: 'https://lh3.googleusercontent.com/d/1ZU48vYg0QrD-bqxb5RMDooWteUqyyuNa', type: 'Haji' },
+            { id: 2, name: 'Haji Plus Cepat', price: 'Rp 250 Jt', duration: '30 Hari', features: ['Visa Haji Plus', 'Hotel Bintang 4', 'Penerbangan Langsung', 'Makan 3x Sehari'], imageUrl: 'https://lh3.googleusercontent.com/d/1iydkg1KO8mYfUvQC32l4yvMxXdlqiYB6', type: 'Haji' },
+            { id: 3, name: 'Haji Hemat Barokah', price: 'Rp 180 Jt', duration: '40 Hari', features: ['Visa Haji Plus', 'Hotel Bintang 3', 'Manasik Lengkap', 'Bus AC'], imageUrl: 'https://lh3.googleusercontent.com/d/1smjSx8YzcSgUX9YCMKrPoFUlP0t1V1UF', type: 'Haji' },
+        ];
+        const umrahPackagesData = [
+            { id: 1, name: 'Umrah Diamond Plus', price: 'Rp 45 Jt', duration: '12 Hari', features: ['Hotel Bintang 5 Dekat Masjid', 'Penerbangan Langsung Business Class', 'City Tour Mekkah, Madinah & Thaif', 'Makan Menu Internasional'], imageUrl: 'https://lh3.googleusercontent.com/d/1BmfHB_evfCvRNADztO2t9COQCPMIWBU3', type: 'Umrah' },
+            { id: 2, name: 'Umrah Keluarga Ceria', price: 'Rp 35 Jt', duration: '10 Hari', features: ['Hotel Bintang 4', 'Penerbangan Langsung', 'Gratis Kereta Cepat', 'Manasik di Hotel'], imageUrl: 'https://lh3.googleusercontent.com/d/1xrk8aL_wYRioamma5g2UHbPdC-5Zrsza', type: 'Umrah' },
+            { id: 3, name: 'Umrah Hemat Awal Tahun', price: 'Rp 28 Jt', duration: '9 Hari', features: ['Hotel Bintang 3', 'Penerbangan Langsung Ekonomi', 'Manasik Lengkap', 'Bus AC'], imageUrl: 'https://lh3.googleusercontent.com/d/1R3vGL86-x7rExgdB-flF34uCYFJAGKZn', type: 'Umrah' },
+            { id: 4, name: 'Umrah Ramadhan Lailatul Qadr', price: 'Rp 55 Jt', duration: '15 Hari', features: ['Hotel Bintang 5', 'Penerbangan Langsung', 'I\'tikaf di Masjidil Haram', 'Buka & Sahur Prasmanan'], imageUrl: 'https://lh3.googleusercontent.com/d/1XK0AWgPbvs5bOPdzKubuNknvN1C9jGNA', type: 'Umrah' },
+        ];
+        const popularUmrahPackages = [umrahPackagesData[0], umrahPackagesData[3]];
+        const featuredHajiPackages = [hajiPackagesData[0], hajiPackagesData[1]];
+
+        // --- DOM Elements ---
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const openBtn = document.getElementById('menu-open-btn');
+        const closeBtn = document.getElementById('menu-close-btn');
+        const pages = document.querySelectorAll('.page-content');
+        const navLinks = document.querySelectorAll('#nav-links a');
+        const navButtons = document.querySelectorAll('.nav-button');
+        const sendWhatsappBtn = document.getElementById('send-whatsapp-btn');
+        
+        // --- FUNCTIONS ---
+        function createPackageCard(pkg) {
+            const tagBgColor = pkg.type === 'Haji' ? 'bg-amber-500' : 'bg-pink-500';
+            const buttonColor = pkg.type === 'Haji' ? 'bg-amber-500 hover:bg-amber-600' : 'bg-pink-500 hover:bg-pink-600';
+            const priceColor = pkg.type === 'Haji' ? 'text-amber-600' : 'text-pink-600';
+            const featuresHTML = pkg.features.map(feature => `
+                <li class="flex items-center">
+                    <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <span>${feature}</span>
+                </li>
+            `).join('');
+
+            return `
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="relative">
+                    <img class="w-full h-60 object-cover" src="${pkg.imageUrl}" alt="${pkg.name}">
+                    <div class="absolute top-0 right-0 m-4 px-3 py-1 text-sm font-semibold text-white rounded-full ${tagBgColor}">${pkg.type}</div>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">${pkg.name}</h3>
+                    <div class="flex justify-between items-baseline mb-4">
+                        <p class="text-2xl font-semibold ${priceColor}">${pkg.price}</p>
+                        <p class="text-gray-500">${pkg.duration}</p>
+                    </div>
+                    <ul class="space-y-2 mb-6 text-gray-600 flex-grow">${featuresHTML}</ul>
+                    <button class="book-now-btn w-full mt-auto text-white font-bold py-3 px-6 rounded-lg ${buttonColor} transition-colors duration-300 shadow-md flex items-center justify-center gap-2">
+                        <span>Pesan Sekarang</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+            </div>`;
+        }
+        
+        function renderPackages(containerId, packageData) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.innerHTML = packageData.map(createPackageCard).join('');
+            }
+        }
+
+        function showPage(pageId) {
+            // Hide all pages
+            pages.forEach(p => p.classList.remove('active'));
+            // Show the target page
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Update active link in sidebar
+            navLinks.forEach(link => {
+                if (link.dataset.page === pageId) {
+                    link.className = "flex items-center p-4 my-2 text-lg rounded-lg transition-all duration-300 ease-in-out cursor-pointer bg-pink-600 text-white shadow-lg";
+                } else {
+                    link.className = "flex items-center p-4 my-2 text-lg rounded-lg transition-all duration-300 ease-in-out cursor-pointer text-gray-600 hover:bg-pink-100 hover:text-pink-800";
+                }
+            });
+            window.scrollTo(0, 0);
+        }
+
+        function toggleSidebar(show) {
+             if (show) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function handleSendMessage() {
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const message = document.getElementById('contact-message').value;
+
+            if (!name || !message) {
+                alert('Mohon isi nama lengkap dan pesan Anda.');
+                return;
+            }
+
+            const phoneNumber = '628563231191';
+            const formattedMessage = `Assalamualaikum, BURAQ Travel.\n\nSaya ingin bertanya.\n\n*Nama Lengkap:*\n${name}\n\n*Alamat Email:*\n${email}\n\n*Pesan:*\n${message}\n\nTerima kasih.`;
+            const encodedMessage = encodeURIComponent(formattedMessage);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // --- INITIALIZATION & EVENT LISTENERS ---
+        // Render all packages on load
+        renderPackages('dashboard-haji-packages', featuredHajiPackages);
+        renderPackages('dashboard-umrah-packages', popularUmrahPackages);
+        renderPackages('haji-packages-list', hajiPackagesData);
+        renderPackages('umrah-packages-list', umrahPackagesData);
+        
+        // Sidebar toggle listeners
+        openBtn.addEventListener('click', () => toggleSidebar(true));
+        closeBtn.addEventListener('click', () => toggleSidebar(false));
+        overlay.addEventListener('click', () => toggleSidebar(false));
+
+        // Navigation listeners
+        const allNavElements = [...navLinks, ...navButtons];
+        allNavElements.forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = el.dataset.page;
+                showPage(pageId);
+                toggleSidebar(false); // Close sidebar after navigation on mobile
+            });
+        });
+        
+        // Contact form listener
+        sendWhatsappBtn.addEventListener('click', handleSendMessage);
+        
+        // Event delegation for "Pesan Sekarang" buttons on package cards
+        document.body.addEventListener('click', function(e) {
+          const bookButton = e.target.closest('.book-now-btn');
+          if (bookButton) {
+            e.preventDefault();
+            showPage('contact');
+          }
+        });
+      });
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
